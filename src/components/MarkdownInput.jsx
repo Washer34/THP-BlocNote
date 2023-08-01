@@ -6,6 +6,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 function MarkdownInput() {
   const [values, setValues] = useState({ title: '', content: '' });
   const [data, setData] = useState([])
+  const [selectedCardIndex, setSelectedCardIndex] = useState(null);
 
 
   useEffect(() => {
@@ -29,20 +30,25 @@ function MarkdownInput() {
     localStorage.setItem(date, JSON.stringify(values))
   };
 
+  const openCard = (index) => {
+    setSelectedCardIndex(index)
+    setValues(data[index])
+  }
+
 
   return (
     <Container fluid>
       <Row>
         <Col md={2} style={{ height: '100vh' }}>
-          <LeftDisplay data={data} />
+          <LeftDisplay data={data} handleChange={handleChange} openCard={openCard}/>
         </Col>
 
         <Col md={10}>
           <Row style={{ height: '50%' }}>
-            <NoteDisplay
-              title={values.title}
-              content={values.content}
-            />
+              <NoteDisplay
+                title={values.title}
+                content={values.content}
+              />
           </Row>
           <Row className="align-items-center justify-content-center" style={{ height: '50%' }}>
             <input style={{ width: '90%', height: '10%' }} value={values.title} onChange={handleChange('title')} />
